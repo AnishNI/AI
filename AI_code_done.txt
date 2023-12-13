@@ -1,0 +1,356 @@
+1) Write a Python program to implement Depth First Search algorithm. Refer the following graph 
+as an Input for the program. [Initial node=1,Goal node=8]
+
+
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, node, neighbor):
+        if node not in self.graph:
+            self.graph[node] = []
+        self.graph[node].append(neighbor)
+
+def dfs(graph, start, goal, path=None):
+    if path is None:
+        path = []
+
+    path = path + [start]
+
+    if start == goal:
+        return path
+
+    if start not in graph:
+        return None
+
+    for neighbor in graph[start]:
+        if neighbor not in path:
+            new_path = dfs(graph, neighbor, goal, path)
+            if new_path:
+                return new_path
+
+    return None
+
+my_graph = Graph()
+my_graph.add_edge(1, 2)
+my_graph.add_edge(1, 3)
+my_graph.add_edge(2, 4)
+my_graph.add_edge(2, 5)
+my_graph.add_edge(3, 6)
+my_graph.add_edge(3, 7)
+my_graph.add_edge(4, 8)
+my_graph.add_edge(5, 8)
+my_graph.add_edge(6, 8)
+my_graph.add_edge(7, 8)
+
+initial_node = 1
+goal_node = 8
+
+result_path = dfs(my_graph.graph, initial_node, goal_node)
+
+if result_path:
+    print(f"Path from {initial_node} to {goal_node}: {result_path}")
+else:
+    print(f"No path found from {initial_node} to {goal_node}")
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Write a Python program to implement Breadth First Search algorithm. Refer the following 
+graph as an Input for the program.[Initial node=1,Goal node=8]
+
+from collections import deque
+
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, node, neighbor):
+        if node not in self.graph:
+            self.graph[node] = []
+        self.graph[node].append(neighbor)
+
+def bfs(graph, start, goal):
+    visited = set()
+    queue = deque([[start]])
+
+    if start == goal:
+        return [start]
+
+    while queue:
+        path = queue.popleft()
+        node = path[-1]
+
+        if node in visited:
+            continue
+
+        neighbors = graph.get(node, [])
+
+        for neighbor in neighbors:
+            new_path = list(path)
+            new_path.append(neighbor)
+            queue.append(new_path)
+
+            if neighbor == goal:
+                return new_path
+
+        visited.add(node)
+
+    return None
+
+# Create the graph
+my_graph = Graph()
+my_graph.add_edge(1, 2)
+my_graph.add_edge(1, 3)
+my_graph.add_edge(2, 4)
+my_graph.add_edge(2, 5)
+my_graph.add_edge(3, 6)
+my_graph.add_edge(3, 7)
+my_graph.add_edge(4, 8)
+my_graph.add_edge(5, 8)
+my_graph.add_edge(6, 8)
+my_graph.add_edge(7, 8)
+
+# Set the initial and goal nodes
+initial_node = 1
+goal_node = 8
+
+# Run BFS
+result_path = bfs(my_graph.graph, initial_node, goal_node)
+
+# Print the result
+if result_path:
+    print(f"Path from {initial_node} to {goal_node}: {result_path}")
+else:
+    print(f"No path found from {initial_node} to {goal_node}")
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3) Write a python program to implement Lemmatization using NLTK 
+
+import nltk
+from nltk.stem import WordNetLemmatizer
+
+wordnet_lemmatizer = WordNetLemmatizer()
+
+text = "studies studying cries cry "
+nltk.download('punkt')
+nltk.download('wordnet')
+tokenization = nltk.word_tokenize(text)
+for w in tokenization:
+  print("Lemma for {} is {}".format(w, wordnet_lemmatizer.lemmatize(w)))
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4) Write a python program to remove punctuations from the given string
+
+punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+my_str = input("Enter a string: ")
+
+no_punct = ""
+for char in my_str:
+   if char not in punctuations:
+       no_punct = no_punct + char
+print(no_punct)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5) Write a python program to remove stop words for a given passage from a text file using NLTK
+
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+
+import nltk
+
+nltk.download('stopwords')
+nltk.download('punkt')
+
+data = text = open("input6.txt").read().lower()
+stopWords = set(stopwords.words('english'))
+words = word_tokenize(data)
+wordsFiltered = [w for w in words if w not in stopWords]
+
+print(wordsFiltered)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+6) Write a python program to sort the sentence in alphabetical order? 
+
+my_str = input("Enter a string: ")
+words = [word.lower() for word in my_str.split()]	
+words.sort()		
+print("The sorted words are:")
+for word in words:
+  print(word)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+7) Write a python program to generate Calendar for the given month and year?. 
+
+import calendar
+y = int(input("Input the year : "))
+m = int(input("Input the month : "))
+print(calendar.month(y, m))
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+8) Write a program to implement Hangman game using python.
+
+import random
+
+def choose_word():
+    words = ["python", "hangman", "programming", "computer", "game"]
+    return random.choice(words)
+
+def display_word(word, guessed_letters):
+    return ' '.join(letter if letter in guessed_letters else '_' for letter in word)
+
+def hangman():
+    word_to_guess = choose_word()
+    guessed_letters = set()
+    attempts = 6
+
+    print("Welcome to Hangman!")
+
+    while attempts > 0:
+        print("\nWord:", display_word(word_to_guess, guessed_letters))
+        guess = input("Enter a letter: ").lower()
+
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter a single letter.")
+            continue
+
+        if guess in guessed_letters:
+            print("You've already guessed that letter. Try again.")
+            continue
+
+        guessed_letters.add(guess)
+
+        if guess not in word_to_guess:
+            attempts -= 1
+            print(f"Incorrect! {attempts} attempts remaining.")
+
+        if set(guessed_letters) == set(word_to_guess):
+            print("Congratulations! You've guessed the word:", word_to_guess)
+            break
+
+    if attempts == 0:
+        print("Sorry, you ran out of attempts. The word was:", word_to_guess)
+
+if __name__ == "__main__":
+    hangman()
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+9) Write a Python program to simulate N-Queens problem
+
+print ("Enter the number of queens")
+N = int(input())
+
+board = [[0]*N for _ in range(N)]
+
+def is_attack(i, j):
+    for k in range(0,N):
+        if board[i][k]==1 or board[k][j]==1:
+            return True
+
+    for k in range(0,N):
+        for l in range(0,N):
+            if (k+l==i+j) or (k-l==i-j):
+                if board[k][l]==1:
+                    return True
+    return False
+
+def N_queen(n):
+    if n==0:
+        return True
+    for i in range(0,N):
+        for j in range(0,N):
+            if (not(is_attack(i,j))) and (board[i][j]!=1):
+                board[i][j] = 1
+                if N_queen(n-1)==True:
+                    return True
+                board[i][j] = 0
+
+    return False
+
+N_queen(N)
+for i in board:
+    print (i)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+10) Build a bot which provides all the information related to you in college
+
+responses_dict = {
+    "hello": "Hello! How can I help you?",
+    "how are you": "I'm doing well, thank you for asking.",
+    "what is your name": "I'm just a chatbot.",
+    "bye": "Goodbye! Have a great day!",
+    "default": "I'm sorry, I don't understand that.",
+}
+
+def get_response(user_input):
+    input_lower = user_input.lower()
+    return responses_dict.get(input_lower, responses_dict["default"])
+
+while True:
+    user_input = input("You: ")
+    response = get_response(user_input)
+    print("Chatbot:", response)
+
+    if user_input.lower() == "bye":
+        break
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+11) Write a Python program to accept a string. Find and print the number of upper case alphabets and lower case alphabets.
+ 				
+Str = input("Enter a string: ")
+lower=0
+upper=0
+for i in Str:
+      if(i.islower()):
+            lower+=1
+      else:
+            upper+=1
+print("The number of lowercase characters is:",lower)
+print("The number of uppercase characters is:",upper)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+12) Write a Python program to solve water jug problem. 2 jugs with capacity 5 gallon and 7 gallon 
+are given with unlimited water supply respectively. The target to achieve is 4 gallon of water in 
+second jug.
+
+MAX_CAPACITY_JUG1 = 5
+MAX_CAPACITY_JUG2 = 7
+TARGET = 4
+
+def solve_water_jug_problem():
+    jug1 = 0
+    jug2 = 0
+    path = []
+    
+    while jug2 != TARGET:
+        path.append((jug1,jug2))
+        
+        if jug2 == 0:
+            jug2 = MAX_CAPACITY_JUG2
+        
+        if jug1 == MAX_CAPACITY_JUG1:
+            jug1 = 0
+        
+        while jug1 != MAX_CAPACITY_JUG1 and jug2 != 0:
+            jug1 += 1
+            jug2 -= 1
+        
+        if jug1 == MAX_CAPACITY_JUG1:
+            jug1 = 0
+            
+    path.append((jug1,jug2))
+    return path
+    
+solution_path = solve_water_jug_problem()
+
+for jug1, jug2 in solution_path:
+    print(f"JUG1 : {jug1} GALLON, JUG2 : {jug2} GALLON")
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+13) Write a Program to Implement Tower of Hanoi using Python.
+
+def tower_of_hanoi(n,source,target,auxiliary):
+    if n == 1:
+        print(f"MOVE DISK 1 FROM {source} TO {target}")
+        return
+    tower_of_hanoi(n-1,source,auxiliary,target)
+    print(f"MOVE DISK {n}FROM {source} TO {target}")
+    tower_of_hanoi(n-1,auxiliary,target,source)
+    
+tower_of_hanoi(3, 'A', 'C', 'B')
+-------------------------------------------------------------------------------------------XX-----------------------------------------------------------------------------------------------
